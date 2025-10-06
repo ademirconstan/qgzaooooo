@@ -44,14 +44,25 @@ class CompanyHub {
     }
 
     private function load_dependencies() {
-        require_once COMPANY_HUB_PLUGIN_DIR . 'includes/class-database.php';
-        require_once COMPANY_HUB_PLUGIN_DIR . 'includes/class-auth.php';
-        require_once COMPANY_HUB_PLUGIN_DIR . 'includes/class-api.php';
-        require_once COMPANY_HUB_PLUGIN_DIR . 'includes/class-admin.php';
-        require_once COMPANY_HUB_PLUGIN_DIR . 'includes/class-frontend.php';
-        require_once COMPANY_HUB_PLUGIN_DIR . 'includes/class-modules.php';
-        require_once COMPANY_HUB_PLUGIN_DIR . 'includes/class-security.php';
-        require_once COMPANY_HUB_PLUGIN_DIR . 'includes/class-utils.php';
+        $includes = array(
+            'includes/class-database.php',
+            'includes/class-security.php',
+            'includes/class-utils.php',
+            'includes/class-auth.php',
+            'includes/class-modules.php',
+            'includes/class-admin.php',
+            'includes/class-frontend.php',
+            'includes/class-api.php'
+        );
+
+        foreach ($includes as $file) {
+            $filepath = COMPANY_HUB_PLUGIN_DIR . $file;
+            if (file_exists($filepath)) {
+                require_once $filepath;
+            } else {
+                error_log("Company Hub: File not found - {$filepath}");
+            }
+        }
     }
 
     private function init_hooks() {
